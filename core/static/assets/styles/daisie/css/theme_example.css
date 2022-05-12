@@ -1,0 +1,25 @@
+:root {
+    /* Globale CSS-Variablen - können ggf. template-mäßig überschrieben werden */
+    --logo-url: url("../../../img/Logo_FIDA_Software_RGB.png");
+
+    --color-primary: 137, 186, 23 !important; --ex: rgb(137,186,23); /*Fida Grün*/
+    --color-primary-dark: 121, 164, 20 !important; --ex: rgb(121,164,20); /*Fida Grün Dunkel*/
+    --color-secondary: 0, 48, 93 !important; --ex: rgb(0, 48, 93); /*Fida Blau*/
+    --default-error-color: red !important; /*Rot/Fehlerfarbe*/
+    --default-text-color: 20,20,20 !important; --ex: rgb(20,20,20); /*Standard Textfarbe*/
+    --default-text-contrast-color: 220,220,220 !important; --ex: rgb(220,220,220);
+    --color-button:  137, 186, 23 !important; --ex: rgb(137,186,23);
+    --color-button-hover:  121, 164, 20 !important; --ex: rgb(121,164,20);
+
+    --font-main: Poppins, sans-serif !important;
+
+    --background-color-footer: 220,220,220 !important; --ex: rgb(220,220,220);
+    --background-color-footer-secondary: 200,200,200 !important; --ex: rgb(200,200,200);
+    --background-color-header:  rgb(255, 255, 255);;
+    --background-color-header-secondary: 150,150,150 !important; --ex: rgb(255, 251, 251);
+    --background-color-basic: 10,10,50 !important; --ex: rgb(10,10,50);
+    --background-color-banner:  rgb(255, 255, 255);
+
+    --default-page-max-width: 100% !important;
+    --default-page-width: 100% !important;
+}

@@ -1,0 +1,65 @@
+:root {
+    /* Globale CSS-Variablen - können ggf. template-mäßig überschrieben werden */
+    /* var() substituiert den Text der Variable im CSS, wenn die Werte in "r,g,b" gespeichert werden kann im nachhinein
+    beispielsweise die Transparenz angepasst werden. */
+    --logo-url: url("../../../img/Logo_FIDA_Software_RGB.png");
+    --color-primary: 137, 186, 23; /*Fida Grün*/
+    --color-primary-dark: 121, 164, 20; /*Fida Grün Dunkel*/
+    --color-secondary: 0, 48, 93; /*Fida Blau*/
+
+    --default-error-color: red; /*Rot/Fehlerfarbe*/
+    --default-text-color: 20,20,20; /*Standard Textfarbe*/
+    --default-text-contrast-color: 220,220,220; /*Textfarbe für dunkle Hintergründe*/
+
+    --color-button:  137, 186, 23;
+    --color-button-hover:  121, 164, 20;
+    --font-main: Poppins, sans-serif;
+
+
+    --background-color-footer: 220,220,220;
+    --background-color-footer-secondary: 200,200,200;
+    --background-color-header: 190,190,190;
+    --background-color-header-secondary: 150,150,150;
+    --background-color-basic: 10,10,50;
+    --background-color-banner: 211,211,211;
+    --background-color-content: 253, 253, 252;
+
+    --default-page-max-width: 1200px;
+    --default-page-width: 1200px;
+
+    /* Standard Boostrap-variablen die nicht überschrieben wurden als Referenz */
+    --bs-blue: #0d6efd;
+    --bs-indigo: #6610f2;
+    --bs-purple: #6f42c1;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #ffc107;
+    --bs-green: #198754;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-white: #fff;
+    --bs-gray: #6c757d;
+    --bs-gray-dark: #343a40;
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+        "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+}
+
+.variables-example {
+    --example-width: 120px;
+
+    /*Beispiele für die Verwendung von Variables */
+    
+    --example-variable: var(--bs-primary);
+    width: var(--example-width); 
+}

@@ -1,0 +1,14 @@
+/* Miscellaneous 
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+/* Help-Text item
+---------------------------------------------------*/
+.daisie-helptext-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-check>label>input {
+    margin-right: 0.5rem;
+}
