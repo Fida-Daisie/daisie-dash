@@ -32,14 +32,20 @@ class DaisieNavigationCard(DaisieComponent):
                 html.Img(className='card-img-top', src=self.__img_path),
                 html.Div(className='card-body',
                 children=[
-                    html.H4(className='card-title',
+                    html.H4(className='text-primary card-title',
                     children=[self.app.title]),
                     html.P(className='card-text',
                     children=[self.app.description])
                 ]),
                 html.Div(className='card-footer',
-                children=[dcc.Link(button_text, className='btn btn-outline-secondary', 
-                    href=self.app.main_app.tree.full_url(self.app.id), refresh=False)])
+                children=[
+                    html.Div([
+                        html.Div([
+                            dcc.Link(button_text, className='btn btn-outline-secondary', 
+                            href=self.app.main_app.tree.full_url(self.app.id), refresh=False)
+                        ], className="col-8", style={"textAlign": "center"})
+                    ], className="justify-content-center row")
+                ])
             ]),
             html.Div(className='bottomrightsnippet'),
         ])       

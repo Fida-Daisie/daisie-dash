@@ -6,7 +6,7 @@ from ..database.db import db_alchemy
 import pandas as pd
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Boolean, Float, Date, Table
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Boolean, Float, Date, Table, MetaData
 
 engine = db_alchemy(name='database').get_engine()
 
@@ -29,6 +29,13 @@ class User(Base, UserMixin):
         self.name = name 
         self.email = email
         
+        if not engine.dialect.has_table(engine, 'user', schema='admin'):  # If table don't exist, Create.
+            metadata = MetaData(engine, schema='admin')
+            Table('user', metadata,
+            Column('id', String, primary_key=True, nullable=False), 
+            Column('name', String), 
+            Column('email', String))     
+            metadata.create_all()
 
     @staticmethod
     def get(id):

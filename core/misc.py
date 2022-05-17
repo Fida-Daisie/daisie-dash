@@ -20,7 +20,7 @@ class config_reader():
             config.read(alt_filepath)            
             return config
         else:
-            raise Exception('No Config file, please add config.ini')
+            raise Exception('No Config file, please add config.ini \n Searched path:' + filepath)
 
 
      

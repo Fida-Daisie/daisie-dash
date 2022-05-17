@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from dash import dash, html, dcc, Input, Output
-
+from .authentification.routes import oauth
 from .appStructure import AppStructure
 from flask_login import current_user
 
@@ -71,7 +71,7 @@ class DaisieMain(dash.Dash):
         if "title" in kwargs.keys():
             ## Title of app
             self.title = kwargs.get('title')
-            del kwargs['title']
+            # del kwargs['title']
 
 
         if "assets_folder" not in kwargs.keys():
@@ -91,6 +91,7 @@ class DaisieMain(dash.Dash):
             id="main-container",
         )
         self.daisie_navigators = []
+        oauth(self)
     
 
 
