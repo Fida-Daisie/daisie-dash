@@ -94,8 +94,9 @@ class AppStructure:
         """
         return self.structure.parent(id).identifier
     
-    # concatenates a list of url-snippets to a path
     def list_to_path(self, url_list):
+        """Concatenates a list of url-snippets to a path.
+        """
         path = ""
         if url_list:
             url_list.pop(0)

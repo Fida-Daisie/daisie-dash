@@ -11,7 +11,8 @@ class DaisieComponent(ABC):
     _id_counter = count(0)
 
     def _createID(self, id):
-        """Protected function to return a unique id by adding a global counter to 'id'
+        """*DEPRECATED*
+        Protected function to return a unique id by adding a global counter to 'id'
         """
         return str(id) + str(next(self._id_counter))
 
@@ -24,8 +25,8 @@ class DaisieComponent(ABC):
         self.main_app = DaisieMain.app
         ## Id of Component. Should be unique in complete DaisieMain instance
         self.id = id
-        ## Callbacks of components get registered, when thy are created
-        self.register_callbacks()
+        ## Callbacks of components get registered in DaisieMain, when thy are created
+        self.main_app._components.append(self)
 
     @abstractmethod
     def get_layout(self):

@@ -41,6 +41,8 @@ class DaisieApp(ABC):
         super().__init__()
 
     def get_layout(self):
+        """Getter for the whole layout (including content).
+        """
         if self._layout is None:
             print('No valid layout id: ' + str(self.title))
         try:
@@ -50,8 +52,9 @@ class DaisieApp(ABC):
             
         
     def set_content(self):
+        """Abstract method to fill the content-container."""
         return html.Div()
 
     def register_callbacks(self):
-        """Abstract method to register callbacks invoked by DaisieMain"""
+        """Abstract method to register callbacks invoked by DaisieMain."""
         pass

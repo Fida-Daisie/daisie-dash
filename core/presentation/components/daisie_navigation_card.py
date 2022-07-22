@@ -9,11 +9,13 @@ class DaisieNavigationCard(DaisieComponent):
     
     Used in DaisieNavigationLayout.
     """
-    def __init__(self, app, id=None):
+    def __init__(self, app, cards_per_row = 4, id=None):
         """Constructor. Initialize internal variables"""
 
         ## Holds the via constructor delivered instance of DaisieApp
         self.app = app
+        self.col_width = str(int(12 / cards_per_row))
+
         super().__init__(id=id)
         if self.app.img_path is None:          
             self.__img_path = "/assets/daisie/core/static/assets/img/FIDA1.jpg"
@@ -24,7 +26,8 @@ class DaisieNavigationCard(DaisieComponent):
         button_text = "Öffnen" # self.app.title
         """Overloaded method to return component specific layout.
         """
-        layout = html.Div(className='col-md-3 mb-2 navigation-card',
+        
+        layout = html.Div(className='navigation-card col-' + self.col_width,
         children=[
             html.Div(className='topleftsnippet'),
             html.Div(className='card h-100',

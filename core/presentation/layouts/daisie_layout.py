@@ -59,24 +59,25 @@ class DaisieLayout(LayoutFundamental):
         #         padding = html.Div(className=self.footer.get('className', 'daisie-footer') + "-padding")
         return html.Div(className=self.backgroundClass, children=[
                     html.Div(className=self.mainContainerClass, children=[
-                    self.header_layout(),
-                    self.NavTop_layout(),
-                    dbc.Row(
-                            [
-                                self.NavLeft_layout(),
-                                dbc.Col(content, className=self.contentContainerClass,
-                                    id = self.id + "-content-container"
-                                ),
-                                self.NavRight_layout()
-                            ],
-                            className=self.bodyContainerClass,
-                            id = self.id + "-body-container"
-                        ),
-                    # padding,
-                    self.footer_layout()
+                        self.header_layout(),
+                        self.NavTop_layout(),
+                        dbc.Row(
+                                [
+                                    self.NavLeft_layout(),
+                                    dbc.Col(content, className=self.contentContainerClass,
+                                        id = self.id + "-content-container"
+                                    ),
+                                    self.NavRight_layout()
+                                ],
+                                className=self.bodyContainerClass,
+                                id = self.id + "-body-container"
+                            ),
+                        # padding,
+                        self.footer_layout()
                     ],
                     id = self.id + "-main-container"
-                    )
+                    ),
+                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen")
                 ],
                 id = self.id + "-background"
                 )

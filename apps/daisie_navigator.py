@@ -10,6 +10,7 @@ class DaisieNavigator(DaisieApp):
             
     def __init__(self, kwargs):
         super().__init__(**kwargs)
+        self.cards_per_row = kwargs.get('cards_per_row', 4)
         self.navigator_root = kwargs.get('root', ['/home'])
         
     def set_content(self):
@@ -20,7 +21,7 @@ class DaisieNavigator(DaisieApp):
         for app in app_list:
             if app.parent in self.navigator_root:
                 if app is not self:
-                    navigation_cards.append(DaisieNavigationCard(app=app).get_layout())
+                    navigation_cards.append(DaisieNavigationCard(app=app, cards_per_row=self.cards_per_row).get_layout())
         
         return html.Div(
                     className="container-fluid content-row",

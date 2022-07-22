@@ -80,6 +80,8 @@ class DaisieMain(dash.Dash):
 
         ## Holds the registered apps. Key: url/pathname, Value: Instance of DaisieApp
         self._apps = {}
+        ## Holds all DaisieComponents. Used to register their callbacks
+        self._components = []
         ## Holds the default DaisieApp
         self._default_app = None
         ## Holds the structure of the apps
@@ -97,6 +99,8 @@ class DaisieMain(dash.Dash):
 
 
     def create_navigator(self, **kwargs): 
+        """Creates a DaisieNavigator app and registers it.
+        """
         from ..apps import DaisieNavigator
         
         is_default = kwargs.get('is_default', True)
@@ -108,6 +112,8 @@ class DaisieMain(dash.Dash):
         
 
     def update_navigator(self):
+        """Call this at the end of main.py to initialize the content of the navigators after every app has been registered.
+        """
         for nav in self.daisie_navigators:
             nav.set_content()
 
@@ -123,7 +129,7 @@ class DaisieMain(dash.Dash):
         """Register an instance of class DaisieApp
         """
         
-        # and the url doesn't occure
+        # and the url doesn't occur
         if self.tree.full_url(app.id) not in self._apps.keys():
             self._apps.update({self.tree.full_url(app.id): app})
 
@@ -159,8 +165,7 @@ class DaisieMain(dash.Dash):
                     security = app_maybe_display.security
                     
                     if security:
-                        if current_user.is_authenticated:
-                            
+                        if current_user is not None and current_user.is_authenticated:
                             app_to_display = app_maybe_display
                         else:
                             pathname = app_maybe_display.alternative
@@ -186,5 +191,10 @@ class DaisieMain(dash.Dash):
                 item.register_callbacks()
             app._layout.register_callbacks()
 
+        for component in self._components:
+            component.register_callbacks()
+
     def showTree(self):
+        """Prints all registered apps and their hierarchy.
+        """
         self.tree.structure.show()

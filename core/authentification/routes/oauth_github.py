@@ -72,7 +72,7 @@ def github_routes(daisie_main):
 
         # Send user back to homepage
         
-        return redirect("/report")
+        return redirect(config['github-oauth'].get("redirect_url"))
 
 def create_request_url(daisie_main):
     authorization_endpoint = "https://github.com/login/oauth/authorize"
