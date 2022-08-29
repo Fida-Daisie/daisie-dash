@@ -1,9 +1,9 @@
 from dash import html
 import dash_bootstrap_components as dbc
 
-from ..layout_fundamental import LayoutFundamental
+from ...components.daisie_component import DaisieComponent
 
-class NavBarTop(LayoutFundamental):  # Getting from Abstract base class - possibly change this to DaisieHeader? (Since it would be in the right place)
+class NavBarTop(DaisieComponent):  # Getting from Abstract base class - possibly change this to DaisieHeader? (Since it would be in the right place)
     """Nested dropdown for a top-bound navigation component"""
 
     def __init__(self, id, title:str=None, logo_link = False, classname = "NavBarTop"):

@@ -8,7 +8,7 @@ class config_reader():
 
     def get_config(self):
         cwd = os.getcwd()
-        print(cwd)
+        # print(cwd)
         filepath = cwd+'/'+ self.name
         alt_filepath = cwd+'/daisie/'+ self.name
         if os.path.isfile(filepath):

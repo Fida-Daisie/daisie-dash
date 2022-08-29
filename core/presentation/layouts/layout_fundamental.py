@@ -6,7 +6,8 @@
 from ... import DaisieMain
 
 class LayoutFundamental(object): # no daisie component anymore
-    """Abstract class for DaisieHeader's"""
+    """*DEPRECIATED* will not be registered anymore!
+    Abstract class for DaisieHeader's"""
 
     def __init__(self, id, title=None):
         """Constructor. Set internal variables"""

@@ -1,22 +1,20 @@
-from .layout_fundamental import LayoutFundamental
-
-
-from dash import html
+# from .layout_fundamental import LayoutFundamental
+from ..components.daisie_component import DaisieComponent
 import dash_bootstrap_components as dbc
 
-class DaisieLayout(LayoutFundamental):
+class DaisieLayout(DaisieComponent):
     """Abstract class for layout's"""
-    def __init__(self, id, title,  header=None, footer=None, NavTop=None, NavLeft=None, NavRight=None, **kwargs):
+    def __init__(self, id, header=None, footer=None, NavTop=None, NavLeft=None, NavRight=None, **kwargs):
         """Constructor. Initializes variables according to given parameter"""
-        super().__init__(id=id, title=title)
+        super().__init__(id=id) # , title=title
         self.header = header 
         self.footer = footer
         self.NavTop = NavTop
         self.NavRight = NavRight
         self.NavLeft = NavLeft
         self.content = kwargs.get('content', [])
-        self.backgroundClass = kwargs.get('backgroundClass', 'base-background')
-        self.mainContainerClass = kwargs.get('mainContainerClass', 'main-container')
+        # self.backgroundClass = kwargs.get('backgroundClass', 'base-background')
+        # self.mainContainerClass = kwargs.get('mainContainerClass', 'main-container')
         self.contentContainerClass = kwargs.get('contentContainerClass', 'content-container')
         self.bodyContainerClass = kwargs.get('bodyContainerClass', 'body-container')
         self.navLeftClass = kwargs.get('navLeftClass', 'NavLeft')
@@ -57,44 +55,37 @@ class DaisieLayout(LayoutFundamental):
         # padding = None
         # if self.footer:
         #         padding = html.Div(className=self.footer.get('className', 'daisie-footer') + "-padding")
-        return html.Div(className=self.backgroundClass, children=[
-                    html.Div(className=self.mainContainerClass, children=[
-                        self.header_layout(),
-                        self.NavTop_layout(),
-                        dbc.Row(
-                                [
-                                    self.NavLeft_layout(),
-                                    dbc.Col(content, className=self.contentContainerClass,
-                                        id = self.id + "-content-container"
-                                    ),
-                                    self.NavRight_layout()
-                                ],
-                                className=self.bodyContainerClass,
-                                id = self.id + "-body-container"
+        return [
+                self.header_layout(),
+                self.NavTop_layout(),
+                dbc.Row(
+                        [
+                            self.NavLeft_layout(),
+                            dbc.Col(content, className=self.contentContainerClass,
+                                id = self.id + "-content-container"
                             ),
-                        # padding,
-                        self.footer_layout()
-                    ],
-                    id = self.id + "-main-container"
+                            self.NavRight_layout()
+                        ],
+                        className=self.bodyContainerClass,
+                        id = self.id + "-body-container"
                     ),
-                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen")
-                ],
-                id = self.id + "-background"
-                )
+                # padding,
+                self.footer_layout()
+            ]
         
-    def collect_callbacks(self):
-        callback_list=[]
-        if self.header:
-            callback_list.append(self.header)
-        if self.footer:
-            callback_list.append(self.footer)
-        if self.NavLeft:
-            callback_list.append(self.NavLeft)
-        if self.NavRight:
-            callback_list.append(self.NavRight)
-        if self.NavTop:
-            callback_list.append(self.NavTop)
-        return callback_list
+    # def collect_callbacks(self):
+    #     callback_list=[]
+    #     if self.header:
+    #         callback_list.append(self.header)
+    #     if self.footer:
+    #         callback_list.append(self.footer)
+    #     if self.NavLeft:
+    #         callback_list.append(self.NavLeft)
+    #     if self.NavRight:
+    #         callback_list.append(self.NavRight)
+    #     if self.NavTop:
+    #         callback_list.append(self.NavTop)
+    #     return callback_list
 
     def register_callbacks(self):
         pass

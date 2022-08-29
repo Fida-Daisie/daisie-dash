@@ -8,10 +8,11 @@ from ..core.presentation.components import DaisieNavigationCard
 class DaisieNavigator(DaisieApp):
     """Navigator app for Daisie"""
             
-    def __init__(self, kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.cards_per_row = kwargs.get('cards_per_row', 4)
-        self.navigator_root = kwargs.get('root', ['/home'])
+        self.navigator_root = kwargs.get('root', ['home'])
+        self.lang = kwargs.get("lang", "de")
         
     def set_content(self):
         navigation_cards = []
@@ -21,7 +22,7 @@ class DaisieNavigator(DaisieApp):
         for app in app_list:
             if app.parent in self.navigator_root:
                 if app is not self:
-                    navigation_cards.append(DaisieNavigationCard(app=app, cards_per_row=self.cards_per_row).get_layout())
+                    navigation_cards.append(DaisieNavigationCard(app=app, cards_per_row=self.cards_per_row, lang=self.lang).get_layout())
         
         return html.Div(
                     className="container-fluid content-row",

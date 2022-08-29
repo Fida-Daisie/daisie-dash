@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from . import LayoutFundamental
+from ...components.daisie_component import DaisieComponent
 
 from dash import html, dcc
 
 
-class StandardHeader(LayoutFundamental):
+class StandardHeader(DaisieComponent):
     """Default header for Daisie (using FIDA logo/links/information)"""
     def __init__(self, id, 
         title=None, 

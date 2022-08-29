@@ -16,7 +16,7 @@ class Breadcrumbs(DaisieComponent):
         breadcrumbs_list = [html.Span(
                                 title="Sie sind hier:",
                                 children=[
-                                    "Sie sind hier: "
+                                    "Sie sind hier: "
                                 ],
                             ),]
 

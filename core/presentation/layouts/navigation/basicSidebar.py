@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..layout_fundamental import LayoutFundamental
+from ...components.daisie_component import DaisieComponent
 from dash import html
 
 import dash_bootstrap_components as dbc
 
-class BasicSidebar(LayoutFundamental):    
+class BasicSidebar(DaisieComponent):    
     def __init__(self, id):
         super().__init__(id=id + '-NavSide')
 

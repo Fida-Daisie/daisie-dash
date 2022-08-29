@@ -1,4 +1,3 @@
-from ..layout_fundamental import LayoutFundamental
 from .standard_footer_bottom import StandardFooterBottom
 from .standard_footer_floating import StandardFooterFloating
 from .large_footer import LargeFooter

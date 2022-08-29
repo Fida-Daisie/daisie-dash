@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from . import DaisieComponent
-from ... import DaisieMain
 from dash import html, dcc
 
 class DaisieNavigationCard(DaisieComponent):
@@ -9,24 +8,30 @@ class DaisieNavigationCard(DaisieComponent):
     
     Used in DaisieNavigationLayout.
     """
-    def __init__(self, app, cards_per_row = 4, id=None):
+    def __init__(self, app, cards_per_row = 4, id=None, lang="de"):
         """Constructor. Initialize internal variables"""
 
         ## Holds the via constructor delivered instance of DaisieApp
         self.app = app
         self.col_width = str(int(12 / cards_per_row))
+        self.lang = lang
 
         super().__init__(id=id)
-        if self.app.img_path is None:          
-            self.__img_path = "/assets/daisie/core/static/assets/img/FIDA1.jpg"
-        else:
-            self.__img_path = self.app.img_path
+        # if self.app.img_path is None:          
+        #     self.__img_path = "/assets/daisie/core/static/assets/img/FIDA1.jpg"
+        # else:
+        self.__img_path = self.app.img_path
 
     def get_layout(self):
-        button_text = "Öffnen" # self.app.title
         """Overloaded method to return component specific layout.
         """
-        
+        if self.lang == "de":
+            button_text = "Öffnen" # self.app.title
+        elif self.lang == "en":
+            button_text = "Open"
+        else:
+            raise ValueError("Other language than de and en are not supported")
+
         layout = html.Div(className='navigation-card col-' + self.col_width,
         children=[
             html.Div(className='topleftsnippet'),

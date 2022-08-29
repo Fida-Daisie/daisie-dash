@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..layout_fundamental import LayoutFundamental
+from ...components.daisie_component import DaisieComponent
 
 from dash import html, Input, Output, State
 import dash_bootstrap_components as dbc
 
-class CollapsibleSidebar(LayoutFundamental):    
+class CollapsibleSidebar(DaisieComponent):    
     def __init__(self, id):
         self.number_of_headlines = 0
         super().__init__(id=id + '-NavSide')

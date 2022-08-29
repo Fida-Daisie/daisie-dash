@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import  os
 from oauthlib.oauth2 import WebApplicationClient
-from .core.misc import config_reader
+from daisie.core.misc import config_reader
 
 from .core import DaisieMain
 # initialize main app
@@ -9,7 +9,7 @@ daisie_main = DaisieMain(__name__,
                 title='Daisie Minimal App',
                 assets_folder = os.getcwd() + f'/{__package__}'
             )
-img = '/assets/core/static/assets/img/FIDA1.jpg'
+img = 'assets/core/static/assets/img/FIDA1.jpg'
 # initialize Navigator instance
 
 config = config_reader().get_config()
@@ -65,13 +65,19 @@ daisie_main.update_navigator()
 # Collect the layouts from all apps
 daisie_main.set_validation_layout()
 
+
+
+
+server = daisie_main.server
+
+
 # traverse through the apps and register all callbacks
 daisie_main.initiate_callbacks()
 
 #print(daisie_main.tree.get_dict_for_breadcrumbs('excel-app'))
 
 # server variable needed for gunicorn or AWS
-server = daisie_main.server
+# server = daisie_main.server
 # application = server
 # app = application
 

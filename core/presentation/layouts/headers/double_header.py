@@ -1,10 +1,8 @@
-from . import LayoutFundamental
+from ...components.daisie_component import DaisieComponent
 import dash_bootstrap_components as dbc
 from dash import html
 
-
-
-class DoubleHeader(LayoutFundamental):
+class DoubleHeader(DaisieComponent):
     def __init__(self, id,  
             title=None, 
             logo_link='https://www.fida.de',

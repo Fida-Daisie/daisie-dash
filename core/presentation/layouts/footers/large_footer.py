@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from . import LayoutFundamental
+from ...components.daisie_component import DaisieComponent
 
 from dash import html
 
-class LargeFooter(LayoutFundamental):
+class LargeFooter(DaisieComponent):
     """Default footer for Daisie (using FIDA logo/links/information)"""
     
     def __init__(self, id,      

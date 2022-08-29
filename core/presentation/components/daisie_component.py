@@ -8,8 +8,8 @@ from ... import DaisieMain
 class DaisieComponent(ABC):
     """Top abstract class for any daisie specific layout component.
     """
-    _id_counter = count(0)
-
+    
+    _id_counter = count(0) # DEPRECATED
     def _createID(self, id):
         """*DEPRECATED*
         Protected function to return a unique id by adding a global counter to 'id'

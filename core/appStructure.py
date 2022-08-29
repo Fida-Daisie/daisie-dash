@@ -3,49 +3,56 @@ import treelib
 class AppStructure: 
     def __init__(self):
         self.structure = treelib.Tree()
-        self.structure.create_node("Home", "/home", data={'url': "/home", 'no_display':False})
-        self.default_app_id = '/home'
+        # self.structure.create_node("root", "/root", data={'url': "/root", 'no_display':False})
+        self.register_url(display="root", id="root", url="/root", parent=None)
+        self.default_app_id = 'root'
+        self._apps = {}
         
-    def get_home(self):
+    def get_root(self):
         """
         Returns:
-            [dict]: {"title": title of the "Home"-App, "url": "url"-tag of the "Home"-App}
+            [dict]: {"title": title of the "root"-App, "url": "url"-tag of the "root"-App}
         """
         title = self.structure.get_node(self.structure.root).tag
         link = self.structure.get_node(self.structure.root).identifier
         return {"title": title, "url": link}
 
-    def set_home(self, title):
+    def set_root_name(self, title):
         """
-        rename the "Home"-Node/App
+        rename the "root"-Node/App
         """
         self.structure.get_node(self.structure.root).tag = title
 
 
-    # registers an app in the tree    
-    def register_app(self, app, no_display=False):
+    # registers an app automatically in the tree
+    # used for all apps in daisie_main
+    def register_app(self, app, default_app=False, no_display=False):
         """
         This function registers an app in the tree relative to the specified parent node.
 
         Args:
             app ([DaisieApp]): [App to register]
+            default_app (bool, optional): [determines, whether the app is the default app]. Defaults to False.
             no_display (bool, optional): [determines, if the app is displayed in navigation components]. Defaults to False.
         """
-        self.structure.create_node(app.title, app.id, parent=app.parent, data={'url':app.url, 'no_display':no_display})
+        self.register_url(app.title, app.id, app.url, app=app, parent=app.parent, default_app=default_app, no_display=no_display)
 
-    # registers an app in the tree
-    # used for all apps in daisie_main
-    def register_url(self, display, id, url, parent="/home", no_display=False):
+    # registers an app manually in the tree
+    def register_url(self, display, id, url, app=None, parent="root", default_app=False, no_display=False):
         """[This does the same as register_app, but "manually". In most cases the other function should be used.]
         
         Args:
             display ([str]): [name to display]
             id ([str]): [id]
             url ([type]): [url-tag of the app]
-            parent (str, optional): [id of the parent-node]. Defaults to "/home".
+            app ([DaisieApp | None]): [app-tag of the app, holds the app instance] Defaults to None.
+            parent (str, optional): [id of the parent-node]. Defaults to "root".
+            default_app (bool, optional): [determines, whether the app is the default app]. Defaults to False.
             no_display (bool, optional): [determines, if the app is displayed in navigation components]. Defaults to False.
         """
-        self.structure.create_node(display, id, parent=parent, data={'url':url, 'no_display':no_display})
+        self.structure.create_node(tag=display, identifier=id, parent=parent, data={'url':url, 'no_display':no_display, "app": app, "default_app": default_app})
+        if app:
+            self._apps.update({self.full_url(id): app})
 
     def get_path(self, id):
         """[returns a list of url-snippets on a path from the root to a node]
@@ -185,9 +192,9 @@ class AppStructure:
     # returns a dictionary of all the children of the root
     # keys: title of app
     # values: id of app
-    def get_pages(self):
+    def get_pages(self, id="root"):
         dict = {}
-        pages = self.structure.children(self.structure.root)
+        pages = self.structure.children(id)
         for chapter in pages:
             if chapter:
                 if not chapter.data['no_display']:
@@ -209,3 +216,7 @@ class AppStructure:
         else:
             innerDict = {}
         return innerDict
+
+    def get_apps(self):
+        """returns dict with full URL as keys and the app instances as values"""
+        return self._apps

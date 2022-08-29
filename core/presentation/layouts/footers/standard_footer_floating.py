@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from . import LayoutFundamental
+from ...components.daisie_component import DaisieComponent
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
-class StandardFooterFloating(LayoutFundamental):
+class StandardFooterFloating(DaisieComponent):
     """Default footer for Daisie (using FIDA logo/links/information)"""
     
     def __init__(self, id,      
