@@ -37,7 +37,7 @@ class DaisieApp(DaisieComponent):
         ## Holds path to application image (e.g. used in navigation card)
         self.img_path = kwargs.get('img_path')
 
-        k_layout=kwargs.get('kwargs_layout', {'title': self.title})
+        k_layout=kwargs.get('kwargs_layout', dict()) # {'title': self.title}
         layout_class = kwargs.get('layout')
         if layout_class:
             layout = object.__new__(layout_class)

@@ -10,7 +10,7 @@ from .appStructure import AppStructure
 from .authentification.User import User
 from .authentification.routes import google_routes, github_routes, linkedin_routes
 
-from .misc import  config_reader
+from .misc import config_reader, read_config_for_oauth
 
 class DaisieMain(dash.Dash):
     """The main application that extends Dash.
@@ -98,11 +98,18 @@ class DaisieMain(dash.Dash):
         
         # oauth
         config = config_reader().get_config()
+        if config is None or all(~read_config_for_oauth()):
+            self.oauth = False
         
         if self.oauth:
             self.google_client = WebApplicationClient(config['google-oauth'].get('client_id'))
             self.github_client = WebApplicationClient(config['github-oauth'].get('client_id'))
             self.linkedin_client = WebApplicationClient(config['linkedin-oauth'].get('client_id'))
+
+            google_callback_url = config['google-oauth'].get('callback_url')
+            github_callback_url = config['github-oauth'].get('callback_url')
+            linkedin_callback_url = config['linkedin-oauth'].get('callback_url')
+            self.callback_urls = {"google":google_callback_url, "github":github_callback_url, "linkedin":linkedin_callback_url}
 
 
     def create_navigator(self, **kwargs): 
@@ -174,12 +181,6 @@ class DaisieMain(dash.Dash):
     
     def initiate_callbacks(self):
         """Callback registration for DaisieMain and iteratively (through all registered) call DaisieApp::register_callback()"""
-        config = config_reader().get_config()
-        if self.oauth:
-            google_callback_url = config['google-oauth'].get('callback_url')
-            github_callback_url = config['github-oauth'].get('callback_url')
-            linkedin_callback_url = config['linkedin-oauth'].get('callback_url')
-        
         @self.callback(
             [
                 Output("page-content", "children"),
@@ -195,12 +196,12 @@ class DaisieMain(dash.Dash):
             ]
         )
         def display_page(pathname, url, last_url):
-            if self.oauth and pathname in [google_callback_url, github_callback_url, linkedin_callback_url]:
-                if pathname ==  google_callback_url:
+            if self.oauth and pathname in self.callback_urls.values():
+                if pathname == self.callback_urls["google"]:
                     google_routes(self.app, url)
-                elif pathname == github_callback_url:
+                elif pathname == self.callback_urls["github"]:
                     github_routes(self.app, url)
-                elif pathname == linkedin_callback_url:
+                elif pathname == self.callback_urls["linkedin"]:
                     linkedin_routes(self.app, url)
                         
                 return [self.choose_app(last_url), last_url, dash.no_update]
