@@ -88,7 +88,7 @@ class DaisieMain(dash.Dash):
                     dcc.Location(id="url-in", refresh=False),
                     dcc.Store(id="last-url", storage_type="session"),
                     html.Div(id="page-content"),
-                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen")
+                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen", style={"display": "none"})
                 ],
                 className = "main-container",
                 id = "main-container"
@@ -173,7 +173,7 @@ class DaisieMain(dash.Dash):
                     content if place in ["above", "top"] else None,
                     html.Div(id="page-content"),
                     content if place in ["below", "bottom"] else None,
-                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen")
+                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen", style={"display": "none"})
                 ],
                 className = "main-container",
                 id = "main-container"
