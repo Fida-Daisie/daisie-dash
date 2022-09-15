@@ -19,6 +19,9 @@ class DaisieApp(DaisieComponent):
         # self.id = id ### done by DaisieComponent
         ## Title of DaisieApp instance. (e.g. used in Navigator)
         self.title = kwargs.get('title')
+        self.navigator_name = kwargs.get("navigator_name")
+        if self.navigator_name is None:
+            self.navigator_name = self.title
         ## URL path of DaisieApp instance
         self.url = kwargs.get('url')
 

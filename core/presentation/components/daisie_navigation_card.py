@@ -41,7 +41,7 @@ class DaisieNavigationCard(DaisieComponent):
                 html.Div(className='card-body',
                 children=[
                     html.H4(className='text-primary card-title',
-                    children=[self.app.title]),
+                    children=[self.app.navigator_name]),
                     html.P(className='card-text',
                     children=[self.app.description])
                 ]),
