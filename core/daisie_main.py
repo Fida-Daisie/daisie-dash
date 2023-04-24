@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Flask
+from flask import Flask, send_file
 from flask_login import LoginManager, current_user
 from dash import dash, html, dcc, Input, Output, State
 from oauthlib.oauth2 import WebApplicationClient
@@ -73,6 +73,10 @@ class DaisieMain(dash.Dash):
         if "oauth" in kwargs.keys():
             kwargs.pop("oauth")
 
+        self.black_screen=kwargs.get('black_screen', True)
+        if "black_screen" in kwargs.keys():
+            kwargs.pop("black_screen")
+
         super().__init__(*args, **kwargs)
 
         ## Holds all DaisieComponents. Used to register their callbacks
@@ -82,25 +86,14 @@ class DaisieMain(dash.Dash):
         ## Holds the structure of the apps
         self.tree = AppStructure()
         ## Holds layout. Required for inherited logic from Dash (avoid external changes)
-        self.layout = html.Div(html.Div(
-                [
-                    dcc.Location(id="url-out", refresh=False), 
-                    dcc.Location(id="url-in", refresh=False),
-                    dcc.Store(id="last-url", storage_type="session"),
-                    html.Div(id="page-content"),
-                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen", style={"display": "none"})
-                ],
-                className = "main-container",
-                id = "main-container"
-            ), className="base-background")
-        
+        self.set_persistence_layout()
+                
         self.daisie_navigators = []
         
         # oauth
         config = config_reader().get_config()
         if config is None or all(~read_config_for_oauth()):
             self.oauth = False
-        
         if self.oauth:
             self.google_client = WebApplicationClient(config['google-oauth'].get('client_id'))
             self.github_client = WebApplicationClient(config['github-oauth'].get('client_id'))
@@ -164,20 +157,20 @@ class DaisieMain(dash.Dash):
     def set_persistence_layout(self, content=None, place="above"):
         if place not in ["above", "below", "top", "bottom"]:
             raise ValueError("\"place\" must be one of above, below, top, bottom")
-        if content:
-            self.layout = html.Div(html.Div(
-                [
-                    dcc.Location(id="url-out", refresh=True), 
-                    dcc.Location(id="url-in", refresh=False),
-                    dcc.Store(id="last-url", storage_type="session"), # TODO: Save language settings for default app in Browser Cache
-                    content if place in ["above", "top"] else None,
-                    html.Div(id="page-content"),
-                    content if place in ["below", "bottom"] else None,
-                    html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen", style={"display": "none"})
-                ],
-                className = "main-container",
-                id = "main-container"
-            ), className="base-background")
+        #if content:
+        self.layout = html.Div(html.Div(
+            [
+                dcc.Location(id="url-out", refresh=False), 
+                dcc.Location(id="url-in", refresh=False),
+                dcc.Store(id="last-url", storage_type="session"), # TODO: Save language settings for default app in Browser Cache
+                content if place in ["above", "top"] else None,
+                html.Div(id="page-content"),
+                content if place in ["below", "bottom"] else None,
+                html.Div(html.Div("Bitte im Querformat darstellen!"), className="black-screen", style={"display": "none"}) if self.black_screen else None
+            ],
+            className = "main-container",
+            id = "main-container"
+        ), className="base-background")
     
     def initiate_callbacks(self):
         """Callback registration for DaisieMain and iteratively (through all registered) call DaisieApp::register_callback()"""
