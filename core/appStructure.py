@@ -26,7 +26,7 @@ class AppStructure:
 
     # registers an app automatically in the tree
     # used for all apps in daisie_main
-    def register_app(self, app, default_app=False, no_display=False):
+    def register_app(self, app, default_app=False, no_display=False, no_sitemap=False):
         """
         This function registers an app in the tree relative to the specified parent node.
 
@@ -34,11 +34,12 @@ class AppStructure:
             app ([DaisieApp]): [App to register]
             default_app (bool, optional): [determines, whether the app is the default app]. Defaults to False.
             no_display (bool, optional): [determines, if the app is displayed in navigation components]. Defaults to False.
+            no_sitemap (bool, optional): [determines, if the app appears in the sitemap]. Defaults to False.
         """
-        self.register_url(app.title, app.id, app.url, app=app, parent=app.parent, default_app=default_app, no_display=no_display)
+        self.register_url(app.title, app.id, app.url, app=app, parent=app.parent, default_app=default_app, no_display=no_display, no_sitemap=no_sitemap)
 
     # registers an app manually in the tree
-    def register_url(self, display, id, url, app=None, parent="root", default_app=False, no_display=False):
+    def register_url(self, display, id, url, app=None, parent="root", default_app=False, no_display=False, no_sitemap=True):
         """[This does the same as register_app, but "manually". In most cases the other function should be used.]
         
         Args:
@@ -49,8 +50,9 @@ class AppStructure:
             parent (str, optional): [id of the parent-node]. Defaults to "root".
             default_app (bool, optional): [determines, whether the app is the default app]. Defaults to False.
             no_display (bool, optional): [determines, if the app is displayed in navigation components]. Defaults to False.
+            no_sitemap (bool, optional): [determines, if the app appears in the sitemap]. Defaults to True
         """
-        self.structure.create_node(tag=display, identifier=id, parent=parent, data={'url':url, 'no_display':no_display, "app": app, "default_app": default_app})
+        self.structure.create_node(tag=display, identifier=id, parent=parent, data={'url':url, 'no_display':no_display, "no_sitemap":no_sitemap, "app": app, "default_app": default_app})
         if app:
             self._apps.update({self.full_url(id): app})
 
@@ -172,7 +174,9 @@ class AppStructure:
                 innerDict = {'link': self.full_url(chapter.identifier), 'title': chapter.tag, 'submenu': submenu}
                 navItemsList.append(innerDict)
         return navItemsList
-
+    
+    def get_urls_for_sitemap(self):
+        return [self.full_url(node.identifier) for node in self.structure.all_nodes() if not node.data["no_sitemap"]]
    
     def pages_with_links(self, node = None):
         if not node:

@@ -4,6 +4,9 @@ from flask import Flask, send_file
 from flask_login import LoginManager, current_user
 from dash import dash, html, dcc, Input, Output, State
 from oauthlib.oauth2 import WebApplicationClient
+from datetime import datetime
+from xml.dom.minidom import Document, Element, Text
+from io import BytesIO
 
 from .appStructure import AppStructure
 
@@ -33,8 +36,17 @@ class DaisieMain(dash.Dash):
         """
         DaisieMain.app = self
         
+        self.__lastModified = str(datetime.now().date())
         
         server = Flask(__name__)
+
+        ## bind robots.txt if in working directory
+        if os.path.exists('./robots.txt'): # os.getcwd()+
+            print("robots.txt found at "+os.path.abspath('./robots.txt'))
+            @server.route("/robots.txt")
+            def static_robotstxt():
+                return send_file(os.path.abspath('./robots.txt'))
+
         ## Authentification service server. Must be an instance of 'IAuthentification' or None
         self.login_manager = LoginManager()
         self.login_manager.init_app(server)
@@ -91,17 +103,17 @@ class DaisieMain(dash.Dash):
         self.daisie_navigators = []
         
         # oauth
-        config = config_reader().get_config()
-        if config is None or all(~read_config_for_oauth()):
+        self.config_file = config_reader().get_config()
+        if self.config_file is None or all(~read_config_for_oauth()):
             self.oauth = False
         if self.oauth:
-            self.google_client = WebApplicationClient(config['google-oauth'].get('client_id'))
-            self.github_client = WebApplicationClient(config['github-oauth'].get('client_id'))
-            self.linkedin_client = WebApplicationClient(config['linkedin-oauth'].get('client_id'))
+            self.google_client = WebApplicationClient(self.config_file['google-oauth'].get('client_id'))
+            self.github_client = WebApplicationClient(self.config_file['github-oauth'].get('client_id'))
+            self.linkedin_client = WebApplicationClient(self.config_file['linkedin-oauth'].get('client_id'))
 
-            google_callback_url = config['google-oauth'].get('callback_url')
-            github_callback_url = config['github-oauth'].get('callback_url')
-            linkedin_callback_url = config['linkedin-oauth'].get('callback_url')
+            google_callback_url = self.config_file['google-oauth'].get('callback_url')
+            github_callback_url = self.config_file['github-oauth'].get('callback_url')
+            linkedin_callback_url = self.config_file['linkedin-oauth'].get('callback_url')
             self.callback_urls = {"google":google_callback_url, "github":github_callback_url, "linkedin":linkedin_callback_url}
 
 
@@ -131,11 +143,11 @@ class DaisieMain(dash.Dash):
         """Returns default DaisieApp instance"""
         return self._default_app
 
-    def register_app(self, app, default_app=False, no_display=False):
+    def register_app(self, app, default_app=False, no_display=False, no_sitemap=False):
         """Register an instance of class DaisieApp
         """
         if app.url not in self.tree.get_apps().keys():
-            self.tree.register_app(app, default_app=default_app, no_display=no_display)
+            self.tree.register_app(app, default_app=default_app, no_display=no_display, no_sitemap=no_sitemap)
             if default_app == True:
                 self._default_app = app
                 self.app.tree.default_app_id = app.id
@@ -235,3 +247,46 @@ class DaisieMain(dash.Dash):
         """Prints all registered apps and their hierarchy.
         """
         self.tree.structure.show()
+
+    def create_sitemap(self):
+        """Creates from hierarchy tree a xml sitemap, that is accessible under "/sitemap.xml".
+        """
+        base_url = self.config_file["url"].get("base_url")
+        rel_urls = self.tree.get_urls_for_sitemap()
+        
+        if base_url and len(rel_urls):
+            urls = [base_url+url for url in rel_urls]
+        else:
+            print("Sitemap could not be created! base_url or app urls are missing.")
+            return
+        
+        
+
+        doc = Document()
+
+        urlset = doc.createElement("urlset")
+        urlset.setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
+        
+        for url in urls:
+            url_el = Element("url")
+            
+            loc = Element("loc")
+            loc_text = Text()
+            loc_text.appendData(url)
+            loc.appendChild(loc_text)
+            
+            lastmod = Element("lastmod")
+            lastmod_text = Text()
+            lastmod_text.appendData(self.__lastModified)
+            lastmod.appendChild(lastmod_text)
+            
+            url_el.appendChild(loc)
+            url_el.appendChild(lastmod)
+            
+            urlset.appendChild(url_el)
+        
+        doc.appendChild(urlset)
+
+        @self.server.route("/sitemap.xml")
+        def static_sitemap():
+            return send_file(BytesIO(doc.toprettyxml(encoding="utf-8")), mimetype="application/xml")

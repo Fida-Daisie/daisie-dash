@@ -30,7 +30,7 @@ class DaisieApp(DaisieComponent):
         
         # register app for DaisieMain
         is_default = kwargs.get("default_app", False)
-        self.main_app.register_app(self, default_app=is_default, no_display=kwargs.get('no_display', False))
+        self.main_app.register_app(self, default_app=is_default, no_display=kwargs.get('no_display', False), no_sitemap=kwargs.get("no_sitemap", False))
 
         self.security = kwargs.get('security')
         self.alternative = kwargs.get('alternative')
